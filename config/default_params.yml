@@ -1,0 +1,39 @@
+#cfndsl default params
+
+application_name: 'MyApp'
+
+source_bucket: cd-test
+source_region: ap-southeast-2
+
+codedeploy:
+  applications:
+    -
+      name: app1
+      deployment_groups:
+        -
+          name: group1
+          deployment_config_name: CodeDeployDefault.OneAtATime
+          type: asg
+          asg_output_stack: WebStack
+          asg_output_param: AutoScaleGroup
+        -
+          name: group2
+          deployment_config_name: CodeDeployDefault.HalfAtATime
+          type: tag
+          tag_key: tier
+          tag_value: worker
+    -
+      name: app2
+      deployment_groups:
+        -
+          name: group3
+          deployment_config_name: CodeDeployDefault.AllAtOnce
+          type: asg
+          asg_output_stack: WorkerStack
+          asg_output_param: AutoScaleGroup
+        -
+          name: group4
+          deployment_config_name: CodeDeployDefault.OneAtATime
+          type: tag
+          tag_key: tier
+          tag_value: admin
