@@ -103,11 +103,19 @@ def create_stack_codedeploy (codedeploy)
                   Property('DeploymentGroupName', FnJoin('', [ Ref('EnvironmentName'), "-#{codedeploy_deployment_group_name}" ]))
                   Property('ApplicationName', Ref("#{codedeploy_application_name}CodeDeployApplication"))
                   Property('DeploymentConfigName', "#{codedeploy_deployment_config_name}")
-                  Property('Ec2TagFilters', [{
-                    Key: "#{codedeploy_tag_key}",
-                    Value: "#{codedeploy_tag_value}",
-                    Type: 'KEY_AND_VALUE',
-                  }])
+                  if deployment_groups['tag_value_EnvironmentName_prefix']==true
+                      Property('Ec2TagFilters', [{
+                        Key: "#{codedeploy_tag_key}",
+                        Value: FnJoin('', [ Ref('EnvironmentName'), "-#{codedeploy_tag_value}" ]),
+                        Type: 'KEY_AND_VALUE',
+                      }])
+                  else
+                    Property('Ec2TagFilters', [{
+                      Key: "#{codedeploy_tag_key}",
+                      Value: "#{codedeploy_tag_value}",
+                      Type: 'KEY_AND_VALUE',
+                    }])
+                  end
                   Property('ServiceRoleArn', FnGetAtt('CodeDeployRole','Arn'))
                 }
               end
