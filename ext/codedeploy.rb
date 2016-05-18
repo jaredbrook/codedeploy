@@ -24,9 +24,10 @@ def nest_stack_codedeploy (codedeploy,template_url)
   }
 end
 
-def create_stack_codedeploy (codedeploy)
+def create_stack_codedeploy (codedeploy,application_name,cf_version)
   if !((defined?codedeploy).nil?)
     CloudFormation do
+      Description "#{application_name} - Codedeploy v#{cf_version}"
       Parameter("EnvironmentName"){ Type 'String' }
       Resource("CodeDeployRole") {
         Type 'AWS::IAM::Role'

@@ -1,6 +1,7 @@
 #cfndsl default params
 
 application_name: 'MyApp'
+cf_version: '0.1'
 
 source_bucket: cd-test
 source_region: ap-southeast-2
